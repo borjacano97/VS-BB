@@ -22,13 +22,13 @@ You can find a simple Hello World example in [this repository](https://github.co
 ## Run a Behaviour Tree from a Visual Scripting Graph
 
 1. Open the Visual Scripting Graph Editor.
-2. Add the node `BehaviourTree Executer` to the graph. ![Add_BB_executer_VS](doc/img/BB_executor-VS.png)
-3. Drag and drop the Behaviour Tree asset you want to run into the `Behaviour` field. ![Drop_Behaviour](doc/img/BB-VS_select_tree.png)
+2. Add the node `BehaviourTree Executer` to the graph. ![Add_BB_executer_VS](doc/img/BB_executor-VS.PNG)
+3. Drag and drop the Behaviour Tree asset you want to run into the `Behaviour` field. ![Drop_Behaviour](doc/img/BB-VS_select_tree.PNG)
 4. You **must** connect to flow input of the `BehaviourTree Executer` node to a `Update` flow node. It can have as many nodes as you want in between, but the flow must reach the `BehaviourTree Executer` node each frame.
 5. The `BehaviourTree Executer` node has two outputs by default:
 	- `Task RUNNING`: This output will be triggered while the Behaviour Tree has not finished executing.
 	- `Task COMPLETED`: This output will be triggered when the Behaviour Tree has finished executing.
-  ![Drop_Behaviour](doc/img/BB-VS_excutor_parameters.png)
+  ![Drop_Behaviour](doc/img/BB-VS_excutor_parameters.PNG)
 6. If the Behaviour attached had a blackboard with parameters as In/Out the node will auto detect those, and will create the corresponding entry and exit points for them. (example count) 
 
 ## Run a Visual Scripting Graph from a Behaviour Tree
