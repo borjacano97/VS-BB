@@ -9,7 +9,7 @@ This project is a bi-directional integration between Unity's Visual Scripting an
 1. Get Behavior Bricks from [Unity's Assets Store](https://assetstore.unity.com/packages/tools/visual-scripting/behavior-bricks-74816) and add it to your account.
 Then import de package into your project ![BB import](doc/img/package_manager.png) and import it into your project. ![PacketManager_Import_BB](doc/img/import_bb.png)
 2. Get Visual Scripting from [Unity's Package Manager]() and import it into your project.
-![PacketManager_Import_VS](image-1.png)
+![PacketManager_Import_VS](doc/img/package_manager_visual_scripting.png)
 3. Get the latest release of this project from [releases](https://github.com/borjacano97/VS-BB/releases) and import it into your project. ![Import_VS_BB](doc/img/import_bb_vs.png)
 4. Regeneate the Visual Scripting Nodes. Go to `Project Settings > Visual Scripting > Regenerate Nodes` and click on `Regenerate Nodes`. ![Regenerate_Nodes](doc/img/regenerate_nodes.png)
 5. You are ready to go!
