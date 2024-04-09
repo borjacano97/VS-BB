@@ -52,3 +52,17 @@ You can find a simple Hello World example in [this repository](https://github.co
 5. Select the new node on the BB editor, go to Parameters and click on `Machine` input parameter, select `BlackBoard`, give it a name and click on `Create`.
 6. Add a new Script/State Machine component to the GameObject that has the Behaviour Tree, and add the Visual Scripting Graph you want to run to it.
 7. Drag and drop the Component to the `Machine` input parameter in the `Behaviour Executor Component`'s `BlackBoard`.
+
+## Script Machines to be used as Behaviour Tree's leaf nodes
+The script machines that are going to be used as leaf nodes in the Behaviour Tree must have special requirements:
+- The Script Machine (or Start Script Machine in the case of State Machines) must have a `On BB Update` node.
+- Then the Task ends, the flow must end on one of the following nodes:
+  - `Complete BB Task`: This node will end the task as completed.
+  - `Abort BB Task`: This node will end the task as failed.
+  - `End Failed Task`: This node will end the task as failed.
+  - `Suspend BB Task`: This node will suspend the task.
+  - `Resume BB Task`: This node will resume the task.
+- Before ending the task, the Script Machine must set the output parameters of the task (if any). To do so, you must use the `Set Task Output Argumetns` node.
+- If the Script Machine has input parameters, the input parameters count must be set on the `On BB Update` node. Once the number of input parameters is set, the node will display a series of Arguments to use as parameter inputs. The order of the arguments is the same as defined on the Generator.
+> ⚠ **WARNING** ⚠: The Script Machine must have the **same number** of input parameters as defined on the Generator. <u>No checks are done to ensure this</u>, so make sure the number of input parameters is correct.
+> ⚠ **WARNING** ⚠: No type checking is done on the input parameters. Make sure the input parameters are of the correct type.
