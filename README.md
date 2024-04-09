@@ -46,7 +46,9 @@ You can find a simple Hello World example in [this repository](https://github.co
    - Output parameters: Number of output parameters the executor will have.
 	 - Type: The type of the output parameter.
 	 - Name: The name of the output parameter.
+    - Output Directory (Optional): The directory where the executor will be saved.
 3. Click on `Generate`.
-4. Now you've created a custom node for your Behavior Tree to execute your script/State Machine under the name you have provided.
-5. With your selected node in the Behavior Tree, set at least the parameter Machine as an In aprameter for the blackboard, put a recognizeable name for it like "node_name_machine"
-6. From the Unity inspector, provide to the BehaviourTree BlackBoard the Machine with your script/StateMachine you wanna run.
+4. Now you've created a custom node for your Behavior Tree to execute your Script/State Machine under the name you have provided. You now can find it in the Behaviour Brick editor at the `ActionPath` you have provided.
+5. Select the new node on the BB editor, go to Parameters and click on `Machine` input parameter, select `BlackBoard`, give it a name and click on `Create`.
+6. Add a new Script/State Machine component to the GameObject that has the Behaviour Tree, and add the Visual Scripting Graph you want to run to it.
+7. Drag and drop the Component to the `Machine` input parameter in the `Behaviour Executor Component`'s `BlackBoard`.
