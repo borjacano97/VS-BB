@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class VSExecuterGenerator
 {
-	private readonly TextAsset _template;
+	private readonly string _template;
+	private readonly string _outputDir;
 	private ExecutorType _executorType;
 	private string _actionString;
 	private string _helpString;
@@ -31,9 +32,10 @@ public class VSExecuterGenerator
 		public string Name;
 	}
 
-	public VSExecuterGenerator(TextAsset template)
+	public VSExecuterGenerator(string template, string outputDir)
 	{
 		_template = template;
+		_outputDir = outputDir;
 	}
 
 	public VSExecuterGenerator SetExecutorType(ExecutorType executorType) 
@@ -86,7 +88,7 @@ public class VSExecuterGenerator
 			outputParameters += MakeOutputParameter(p) + Environment.NewLine + '\t';
 		}
 
-		string result = _template.text.
+		string result = _template.
 			Replace("$ACTION_PATH$", _actionString).
 			Replace("$HELP$", _helpString).
 			Replace("$MACHINE_TYPE$", _executorType.ToString()).
@@ -103,8 +105,8 @@ public class VSExecuterGenerator
 	}
 
 	private void WriteResult(string content)
-	{ 
-		string dir_path = Application.dataPath + "/integration_vs-bb/BehaviourBricks/Generated/Executors";
+	{
+		string dir_path = Path.Combine(Application.dataPath, _outputDir);
 		string file_path = dir_path + "/" + _executorName.Replace(' ', '_') + ".cs";
 
 		Directory.CreateDirectory(dir_path);    // Make sure directory exists
