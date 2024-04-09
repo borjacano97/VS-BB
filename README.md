@@ -35,7 +35,6 @@ You can find a simple Hello World example in [this repository](https://github.co
 	 - Type: The type of the output parameter.
 	 - Name: The name of the output parameter.
 3. Click on `Generate`.
-4. TODO!!
-5. Eventos custom en VS
-6. Blackboard en el objeto
-7. ...
+4. Now you've created a custom node for your Behavior Tree to execute your script/State Machine under the name you have provided.
+5. With your selected node in the Behavior Tree, set at least the parameter Machine as an In aprameter for the blackboard, put a recognizeable name for it like "node_name_machine"
+6. From the Unity inspector, provide to the BehaviourTree BlackBoard the Machine with your script/StateMachine you wanna run.
