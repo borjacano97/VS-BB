@@ -1,5 +1,7 @@
 # VS-BB
-Bi-directional integartion between Unity's Visual Scripting and Pada1's BehaviourTree
+Bi-directional integartion between Unity's Visual Scripting and Pada1's BehaviourTree for Unity 2023.2.5f1 or greater 
+
+(previus version of Unity present bugs wiht Visual Scripting far out of our control)
 
 # Introduction
 This project is a bi-directional integration between Unity's Visual Scripting and Pada1's BehaviourTree. The goal is to allow the user to create a behaviour tree in Pada1's BehaviourTree and then run it from within a Visual Scripting graph in Unity. An to run Visual Scripts "coded" in VS as a Behaviour Tree's leaf node.
