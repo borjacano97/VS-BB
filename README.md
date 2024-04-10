@@ -35,6 +35,8 @@ You can find a simple Hello World example in [this repository](https://github.co
 ## Run a Visual Scripting Graph from a Behaviour Tree
 
 1. Open the Visual Scripting Executor generator on `Window > Behaviour Bricks > Create New Visual Scripting Executor`.
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_1.PNG)
+
 2. Fill the fields with the desired information.
    - Script Machine or State Machine
    - Name of the Visual Scripting Graph
@@ -47,11 +49,23 @@ You can find a simple Hello World example in [this repository](https://github.co
 	 - Type: The type of the output parameter.
 	 - Name: The name of the output parameter.
     - Output Directory (Optional): The directory where the executor will be saved.
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_2.PNG)
+
 3. Click on `Generate`.
 4. Now you've created a custom node for your Behavior Tree to execute your Script/State Machine under the name you have provided. You now can find it in the Behaviour Brick editor at the `ActionPath` you have provided.
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_3.PNG)
+
 5. Select the new node on the BB editor, go to Parameters and click on `Machine` input parameter, select `BlackBoard`, give it a name and click on `Create`.
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_4.PNG)
+
 6. Add a new Script/State Machine component to the GameObject that has the Behaviour Tree, and add the Visual Scripting Graph you want to run to it.
 7. Drag and drop the Component to the `Machine` input parameter in the `Behaviour Executor Component`'s `BlackBoard`.
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_6.PNG)
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_5.PNG) 
 
 ## Script Machines to be used as Behaviour Tree's leaf nodes
 The script machines that are going to be used as leaf nodes in the Behaviour Tree must have special requirements:
@@ -62,7 +76,15 @@ The script machines that are going to be used as leaf nodes in the Behaviour Tre
   - `End Failed Task`: This node will end the task as failed.
   - `Suspend BB Task`: This node will suspend the task.
   - `Resume BB Task`: This node will resume the task.
+  - `Ending the flow with nothing`: the Executor will asume the task status is `Running`
 - Before ending the task, the Script Machine must set the output parameters of the task (if any). To do so, you must use the `Set Task Output Argumetns` node.
+
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_8.PNG)
+
 - If the Script Machine has input parameters, the input parameters count must be set on the `On BB Update` node. Once the number of input parameters is set, the node will display a series of Arguments to use as parameter inputs. The order of the arguments is the same as defined on the Generator.
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_7.PNG)
+
 > ⚠ **WARNING** ⚠: The Script Machine must have the **same number** of input parameters as defined on the Generator. <u>No checks are done to ensure this</u>, so make sure the number of input parameters is correct.
 > ⚠ **WARNING** ⚠: No type checking is done on the input parameters. Make sure the input parameters are of the correct type.
