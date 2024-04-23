@@ -1,5 +1,7 @@
 # VS-BB
-Bi-directional integartion between Unity's Visual Scripting and Pada1's BehaviourTree
+Bi-directional integartion between Unity's Visual Scripting and Pada1's BehaviourTree for Unity 2023.2.5f1 or greater 
+
+(previus version of Unity present bugs wiht Visual Scripting far out of our control)
 # Table of Contents
 - [VS-BB](#vs-bb)
 - [Table of Contents](#table-of-contents)
@@ -10,7 +12,6 @@ Bi-directional integartion between Unity's Visual Scripting and Pada1's Behaviou
   - [Run a Visual Scripting Graph from a Behaviour Tree](#run-a-visual-scripting-graph-from-a-behaviour-tree)
     - [Script Machines to be used as Behaviour Tree's leaf nodes](#script-machines-to-be-used-as-behaviour-trees-leaf-nodes)
 - [Hello World](#hello-world)
-
 
 # Introduction
 This project is a bi-directional integration between Unity's Visual Scripting and Pada1's BehaviourTree. The goal is to allow the user to create a behaviour tree in Pada1's BehaviourTree and then run it from within a Visual Scripting graph in Unity. An to run Visual Scripts "coded" in VS as a Behaviour Tree's leaf node.
@@ -47,6 +48,8 @@ and import it into your project.
 ## Run a Visual Scripting Graph from a Behaviour Tree
 
 1. Open the Visual Scripting Executor generator on `Window > Behaviour Bricks > Create New Visual Scripting Executor`.
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_1.PNG)
+
 2. Fill the fields with the desired information.
    - Script Machine or State Machine
    - Name of the Visual Scripting Graph
@@ -59,11 +62,23 @@ and import it into your project.
 	 - Type: The type of the output parameter.
 	 - Name: The name of the output parameter.
     - Output Directory (Optional): The directory where the executor will be saved.
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_2.PNG)
+
 3. Click on `Generate`.
 4. Now you've created a custom node for your Behavior Tree to execute your Script/State Machine under the name you have provided. You now can find it in the Behaviour Brick editor at the `ActionPath` you have provided.
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_3.PNG)
+
 5. Select the new node on the BB editor, go to Parameters and click on `Machine` input parameter, select `BlackBoard`, give it a name and click on `Create`.
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_4.PNG)
+
 6. Add a new Script/State Machine component to the GameObject that has the Behaviour Tree, and add the Visual Scripting Graph you want to run to it.
 7. Drag and drop the Component to the `Machine` input parameter in the `Behaviour Executor Component`'s `BlackBoard`.
+
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_6.PNG)
+ ![Executor Generator](doc/img/Create_BB_node_using_VS_5.PNG) 
 
 ### Script Machines to be used as Behaviour Tree's leaf nodes
 The script machines that are going to be used as leaf nodes in the Behaviour Tree must have special requirements:
@@ -75,6 +90,7 @@ The script machines that are going to be used as leaf nodes in the Behaviour Tre
   - `End Failed Task`: This node will end the task as <u>failed</u>.
   - `Suspend BB Task`: This node will <u>suspend</u> the task.
   - `Resume BB Task`: This node will <u>resume</u> the task.
+  Ending the flow with nothing: the Executor will asume the task status is `Running`
 - Before ending the task on one of the previous nodes, the Script Machine must set the output parameters of the task (if any). To do so, you must use the `Set Task Output Arguments` node (![set_task_output_arguments](doc/img/set_task_output_paramerters.png)). This node **must** have as many arguments as defined on the Generator. The order of the arguments **must** the same as defined on the Generator.
 
 > ⚠ **WARNING** ⚠: The Script Machine must have the **same number** of input parameters as defined on the Generator. **<u>No checks are done to ensure this</u>**, so make sure the number of input parameters is correct.
@@ -82,4 +98,4 @@ The script machines that are going to be used as leaf nodes in the Behaviour Tre
 > ⚠ **WARNING** ⚠: **No type checking** is done on the input nor output parameters . Make sure the input parameters are of the correct type.
 
 # Hello World
-You can find a simple Hello World example in [this repository](https://github.com/borjacano97/HelloWorld-VS_BB) .
+You can find a simple Hello World example in [this repository](https://github.com/borjacano97/HelloWorld-VS_BB).
