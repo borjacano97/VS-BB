@@ -20,8 +20,6 @@ public class BehaviorTreeExecutor : Unit
 	private ControlInput update;
 	private ControlOutput running;
 	private ControlOutput completed;
-	
-	//private ValueInput behaviorValueInput;
 
 	private ValueInput maxTaskPerTickInput;
 	private ValueInput pauseValueInput;
@@ -56,71 +54,60 @@ public class BehaviorTreeExecutor : Unit
 
 
 
-	public void foo1()
+	public void SetInternal()
     {
 		brickAsset_.RegisterSubbehaviors();
 		_blackboard = unityBlackboard.BuildBlackboard();
 		executor.SetBrickAsset(brickAsset_, _blackboard);
 	}
 
-	public void foo2()
+	public void UpdateInputParams()
     {
 		brickAsset_.RegisterSubbehaviors();
 		if (brickAsset_.behavior != null)
 			unityBlackboard.updateParams(brickAsset_.behavior.inParamValues);
 	}
-
-
-    //public void StartBehavior()
-    //{
-    //	//blackboard.updateParams(brickAsset_.behavior.inParamValues);
-    //	//brickAsset_.RegisterSubbehaviors();
-
-    //	brickAsset.RegisterSubbehaviors();
-    //	executor.SetBrickAsset(brickAsset, blackboard.BuildBlackboard());
-
-    //}
-
-    protected override void AfterDefine()
-    {
-
+	
+	protected override void AfterDefine()
+	{
 		if (brickAsset_ != null)
-        {
-			//tal vez restreingirlo a un numero máximo de intentos, lo cual puede ser malo si tu procesador es muy malo, y si justo es que no has llegado a cargarlo??
+		{
 			_ = System.Threading.Tasks.Task.Run(async () => {
 
 				if (!goodDefined)
 				{
-					while (brickAsset_.behavior != null)
-					await System.Threading.Tasks.Task.Delay(1);
+					// Espera a que se defina el behavior, por favor
+					// tal vez restreingirlo a un numero mÃ¡ximo de intentos sea buena idea,
+					// pero puede ser malo si tu procesador es muy malo,
+					// y si justo es que no has llegado a cargarlo??
+					while (brickAsset_.behavior == null)
+					{
+						await System.Threading.Tasks.Task.Delay(5);
+					}
 					Define();
 				}
 			});
-        }
+		}
 		base.AfterDefine();
-    }
+	}
 
-    protected override void Definition()
+	protected override void Definition()
 	{
 
 
 		goodDefined = false;
 		pauseValueInput = ValueInput<bool>("Pause", false);
-			restartWhenFinishedValueInput = ValueInput<bool>("RestartWhenFinished", false);
-			maxTaskPerTickInput = ValueInput<int>("MaxTaskPerTick", 500);
+		restartWhenFinishedValueInput = ValueInput<bool>("RestartWhenFinished", false);
+		maxTaskPerTickInput = ValueInput<int>("MaxTaskPerTick", 500);
 
 
-			update = ControlInput("Update", Execute);
+		update = ControlInput("Update", Execute);
 
-			running   = ControlOutput("Taks RUNNING");
-			completed = ControlOutput("Taks COMPLETED");
-      
-			InitParameters();
+		running   = ControlOutput("Taks RUNNING");
+		completed = ControlOutput("Taks COMPLETED");
+		InitParameters();
 	}
-	private void ParamsSet()
-    {
-		
-	}
+
 	private void InitParameters()
 	{
 
@@ -153,45 +140,36 @@ public class BehaviorTreeExecutor : Unit
 
 		//StartBehavior();
 
-		foo2();
+		UpdateInputParams();
 
-		// Inputs
 		if (brickAsset_.behavior != null)
+		{
+			// Inputs
 			foreach (var input in brickAsset_.behavior.inParamValues.values)
 			{
 				var valueInput = ValueInput(input.Value.type, input.Key);
 				_behaviourInputs.Add(input.Key, valueInput);
 			}
 
-		// Outputs
-		if (brickAsset_.behavior != null)
+			// Outputs
 			foreach (var output in brickAsset_.behavior.outParamValues.values)
 			{
-
 				var valueOutput = ValueOutput(output.Value.type, output.Key);
 				_behaviourOutputs.Add(output.Key, valueOutput);
 			}
 
+		}
 	}
 
 	private void Init(GameObject obj) 
 	{
 		if (!brickAsset_) return;
-		//if (!goodDefined)
-  //      {
-		//	Debug.Log("redefinir");
-		//	Define();
-		//	//InitParameters();
-		//	//Definition();
-		//	return;
-  //      }
 		if (_initialized) return;
 		_initialized = true;
 
-
 		brickAsset_.RegisterSubbehaviors();
 		executor = new(obj);
-		_blackboard =  unityBlackboard.BuildBlackboard();
+		_blackboard = unityBlackboard.BuildBlackboard();
 		executor.SetBrickAsset(brickAsset_, _blackboard);
     }
 
@@ -200,22 +178,16 @@ public class BehaviorTreeExecutor : Unit
 	{ 
 		var paused               = flow.GetValue<bool>(pauseValueInput);
 		var restartWhenFinished  = flow.GetValue<bool>(restartWhenFinishedValueInput);
-		//var behavior             = flow.GetValue<brickAsset_>(behaviorValueInput);
 		var gameObject           = flow.stack.gameObject;
 		var maxTaskPerTick       = flow.GetValue<int>(maxTaskPerTickInput);
 
-	
-
-
-
-
 		if (gameObject != null)
-        {
+		{
 			if (!_initialized)
-            {
+			{
 				Init(gameObject);
 				return null;
-            }
+			}
 			if (!paused) 
 			{
 
@@ -225,14 +197,11 @@ public class BehaviorTreeExecutor : Unit
 					foreach (var (portkey, port) in _behaviourInputs)
 					{
 						unityBlackboard.SetBehaviorParam(portkey, flow.GetValue(port));
-						//_blackboard.Set(portkey, port.type, flow.GetValue(port));
 
-
-							//para añadir 
 						_blackboard = unityBlackboard.BuildBlackboard();
 						executor.SetBrickAsset(brickAsset_, _blackboard);
-							//foo1();
-							seted = true;
+						//SetInternal();
+						seted = true;
 					}
 
 					executor.Tick(maxTaskPerTick);
@@ -249,10 +218,10 @@ public class BehaviorTreeExecutor : Unit
 				if (executor.Finished)
 				{
 					if (restartWhenFinished)
-                    {
-						foo1();
+					{
+						SetInternal();
 						seted = false;
-                    }
+					}
 					return completed;
 				}
 				else 
@@ -260,22 +229,8 @@ public class BehaviorTreeExecutor : Unit
 					return running;
 				}
 			}
-        }
+		}
 
 		return null;
 	}
-
-
-
-	//IEnumerator redefineLater()
-	//{
-	//	Debug.Log("comienza el redefine");
-
-	//	while (brickAsset_.behavior == null)
- //       {
-	//		Debug.Log("espera activa para redefinir dios mio que desastre");
- //       }
-	//	InitParameters();
-	//	yield return null;
-	//}
 }
