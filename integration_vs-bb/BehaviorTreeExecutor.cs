@@ -37,37 +37,37 @@ public class BehaviorTreeExecutor : Unit
 	}
 	public BrickAsset oldBrickAsset;
 	private UnityBlackboard unityBlackboard = new();
-    private Pada1.BBCore.Blackboard _blackboard;
+	private Pada1.BBCore.Blackboard _blackboard;
 	private BrickExecutor executor = new();
 
 	[Serialize]
-	public Dictionary<string, ValueInput>  _behaviourInputs  = new();
+	public Dictionary<string, ValueInput> _behaviourInputs = new();
 	[Serialize]
 	public Dictionary<string, ValueOutput> _behaviourOutputs = new();
 
 
 
-    
-	
+
+
 	private bool seted = false;
 	public bool goodDefined = false;
 
 
 
 	public void SetInternal()
-    {
+	{
 		brickAsset_.RegisterSubbehaviors();
 		_blackboard = unityBlackboard.BuildBlackboard();
 		executor.SetBrickAsset(brickAsset_, _blackboard);
 	}
 
 	public void UpdateInputParams()
-    {
+	{
 		brickAsset_.RegisterSubbehaviors();
 		if (brickAsset_.behavior != null)
 			unityBlackboard.updateParams(brickAsset_.behavior.inParamValues);
 	}
-	
+
 	protected override void AfterDefine()
 	{
 		if (brickAsset_ != null)
@@ -103,7 +103,7 @@ public class BehaviorTreeExecutor : Unit
 
 		update = ControlInput("Update", Execute);
 
-		running   = ControlOutput("Taks RUNNING");
+		running = ControlOutput("Taks RUNNING");
 		completed = ControlOutput("Taks COMPLETED");
 		InitParameters();
 	}
@@ -117,17 +117,17 @@ public class BehaviorTreeExecutor : Unit
 
 		if (brickAsset_ == null) return;
 
-	//	Debug.Log("Definition :D");
+		//	Debug.Log("Definition :D");
 
 		if (brickAsset_.behavior == null)
-        {
-           // Debug.Log("no hay behavior :D");
+		{
+			// Debug.Log("no hay behavior :D");
 
-			
+
 
 		}
-        else
-        {
+		else
+		{
 			//Debug.Log("Definido good :D");
 			goodDefined = true;
 		}
@@ -161,7 +161,7 @@ public class BehaviorTreeExecutor : Unit
 		}
 	}
 
-	private void Init(GameObject obj) 
+	private void Init(GameObject obj)
 	{
 		if (!brickAsset_) return;
 		if (_initialized) return;
@@ -171,15 +171,15 @@ public class BehaviorTreeExecutor : Unit
 		executor = new(obj);
 		_blackboard = unityBlackboard.BuildBlackboard();
 		executor.SetBrickAsset(brickAsset_, _blackboard);
-    }
+	}
 
 
 	private ControlOutput Execute(Flow flow)
-	{ 
-		var paused               = flow.GetValue<bool>(pauseValueInput);
-		var restartWhenFinished  = flow.GetValue<bool>(restartWhenFinishedValueInput);
-		var gameObject           = flow.stack.gameObject;
-		var maxTaskPerTick       = flow.GetValue<int>(maxTaskPerTickInput);
+	{
+		var paused = flow.GetValue<bool>(pauseValueInput);
+		var restartWhenFinished = flow.GetValue<bool>(restartWhenFinishedValueInput);
+		var gameObject = flow.stack.gameObject;
+		var maxTaskPerTick = flow.GetValue<int>(maxTaskPerTickInput);
 
 		if (gameObject != null)
 		{
@@ -188,20 +188,29 @@ public class BehaviorTreeExecutor : Unit
 				Init(gameObject);
 				return null;
 			}
-			if (!paused) 
+			if (!paused)
 			{
 
 				if (!executor.Finished)
 				{
-					if (!seted)
+
+					//Comentado porque creemos que no hace falta con la implementacion actual, en su momento hacia falta al reiniciar 
+
+					//if (!seted)
+					//               {
+					//	foreach (var (portkey, port) in _behaviourInputs)
+					//	{
+					//		unityBlackboard.SetBehaviorParam(portkey, flow.GetValue(port));
+					//	}
+					//	_blackboard = unityBlackboard.BuildBlackboard();
+					//	executor.SetBrickAsset(brickAsset_, _blackboard);
+					//	//SetInternal();
+					//	seted = true;
+					//               }
+
 					foreach (var (portkey, port) in _behaviourInputs)
 					{
-						unityBlackboard.SetBehaviorParam(portkey, flow.GetValue(port));
-
-						_blackboard = unityBlackboard.BuildBlackboard();
-						executor.SetBrickAsset(brickAsset_, _blackboard);
-						//SetInternal();
-						seted = true;
+						_blackboard.Set(portkey, port.type, flow.GetValue(port));
 					}
 
 					executor.Tick(maxTaskPerTick);
@@ -224,7 +233,7 @@ public class BehaviorTreeExecutor : Unit
 					}
 					return completed;
 				}
-				else 
+				else
 				{
 					return running;
 				}
