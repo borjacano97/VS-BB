@@ -11,6 +11,7 @@ using UnityEngine;
 
 public abstract class VSExecuter<T>: GOAction where T : VSExecuter<T>
 {
+	/// <summary> The machine that will execute the task </summary>
 	protected abstract IMachine Machine { get; }
 
 
@@ -39,8 +40,8 @@ public abstract class VSExecuter<T>: GOAction where T : VSExecuter<T>
 	private EventHook onEndedHook;
 	private EventHook onFailedEndHook;
 
-	// Main class method, invoked by the execution engine.
-
+	// Called before the first Update.
+	// Register and subscribe to all the hooks
 	public override void OnStart()
 	{
 		/// ACTIONS FROM THE VS TO THE EXECUTER
@@ -73,6 +74,9 @@ public abstract class VSExecuter<T>: GOAction where T : VSExecuter<T>
 		onEndedHook     = new EventHook(Constants.EventTriggers.onBBEnd,     Machine);
 		onFailedEndHook = new EventHook(Constants.EventTriggers.onBBFailed,  Machine);
 	}
+
+	///<summary>Executed each frame of the Executer selected this node</summary>
+	///<returns>TaskStatus</returns>
 	public override TaskStatus OnUpdate()
 	{
 

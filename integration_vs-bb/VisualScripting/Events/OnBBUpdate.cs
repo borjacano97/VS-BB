@@ -27,11 +27,13 @@ public sealed class OnBBUpdate : MachineEventUnit<UpdateArguments>
 	private int _argsCount = 0;
 
 
+	/// <summary> The number of arguments that this event will receive. </summary>
 	[DoNotSerialize]
 	[Inspectable, UnitHeaderInspectable("Aguments Count")]
 	public int ArgsCount
 	{
 		get => _argsCount;
+		// Clamp the value between 0 and the maximum number of arguments.
 		set => _argsCount = Math.Clamp(value, 0, Constants.MAX_ARGS);
 	}
 
@@ -39,11 +41,12 @@ public sealed class OnBBUpdate : MachineEventUnit<UpdateArguments>
 	{
 		base.Definition();
 
-
+		// If the number of arguments has changed, update the outputs.
 		if (ArgsCount != _valueOutputs.Count) 
 		{
 			valueOutputs.Clear();
 			_valueOutputs.Clear();
+			// Create an output for each argument.
 			for(int i = 0; i < ArgsCount; i++)
 			{
 				var output = ValueOutput<object>($"Arg{i}");
