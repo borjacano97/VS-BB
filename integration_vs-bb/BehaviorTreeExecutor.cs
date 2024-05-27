@@ -77,7 +77,7 @@ public class BehaviorTreeExecutor : Unit
 				if (!goodDefined)
 				{
 					// Espera a que se defina el behavior, por favor
-					// tal vez restreingirlo a un numero m√°ximo de intentos sea buena idea,
+					// tal vez restreingirlo a un numero m·ximo de intentos sea buena idea,
 					// pero puede ser malo si tu procesador es muy malo,
 					// y si justo es que no has llegado a cargarlo??
 					while (brickAsset_.behavior == null)
@@ -197,7 +197,7 @@ public class BehaviorTreeExecutor : Unit
 					//Comentado porque creemos que no hace falta con la implementacion actual, en su momento hacia falta al reiniciar 
 
 					//if (!seted)
-					//               {
+     //               {
 					//	foreach (var (portkey, port) in _behaviourInputs)
 					//	{
 					//		unityBlackboard.SetBehaviorParam(portkey, flow.GetValue(port));
@@ -206,7 +206,7 @@ public class BehaviorTreeExecutor : Unit
 					//	executor.SetBrickAsset(brickAsset_, _blackboard);
 					//	//SetInternal();
 					//	seted = true;
-					//               }
+     //               }
 
 					foreach (var (portkey, port) in _behaviourInputs)
 					{
